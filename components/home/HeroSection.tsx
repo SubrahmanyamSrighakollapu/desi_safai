@@ -1,7 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import Link from "next/link";
-import { ArrowRight, CheckCircle, Star, Phone } from "lucide-react";
+import { ArrowRight, CheckCircle, Star, Phone, Sparkles } from "lucide-react";
 import Button from "@/components/ui/Button";
 import { SITE_CONFIG } from "@/lib/constants";
 
@@ -12,67 +11,81 @@ const trustBadges = [
   "100% Satisfaction Guarantee",
 ];
 
+const floatingStats = [
+  { value: "5,000+", label: "Happy Customers", color: "text-blue-600" },
+  { value: "98%", label: "Satisfaction Rate", color: "text-green-600" },
+];
+
 export default function HeroSection() {
   return (
-    <section className="relative min-h-screen flex items-center hero-gradient overflow-hidden pt-20">
-      {/* Background blobs */}
+    <section className="relative min-h-screen flex items-center overflow-hidden pt-20 hero-gradient">
+      {/* Subtle grid pattern */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.03]"
+        style={{
+          backgroundImage: `linear-gradient(#1d4ed8 1px, transparent 1px), linear-gradient(90deg, #1d4ed8 1px, transparent 1px)`,
+          backgroundSize: "60px 60px",
+        }}
+      />
+      {/* Glow orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          animate={{ scale: [1, 1.1, 1], rotate: [0, 5, 0] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-32 -right-32 w-[600px] h-[600px] rounded-full bg-blue-100/50 blur-3xl"
+          animate={{ scale: [1, 1.08, 1], x: [0, 20, 0] }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-40 -right-40 w-[700px] h-[700px] rounded-full bg-blue-400/10 blur-[100px]"
         />
         <motion.div
-          animate={{ scale: [1, 1.15, 1], rotate: [0, -5, 0] }}
-          transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -bottom-32 -left-32 w-[500px] h-[500px] rounded-full bg-green-100/50 blur-3xl"
+          animate={{ scale: [1, 1.12, 1], x: [0, -20, 0] }}
+          transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -bottom-40 -left-40 w-[600px] h-[600px] rounded-full bg-green-400/10 blur-[100px]"
         />
       </div>
 
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
-        {/* Left Content */}
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 py-20 grid lg:grid-cols-2 gap-16 items-center">
+        {/* Left */}
         <div>
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 text-blue-700 text-sm font-semibold mb-6"
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-50 border border-blue-100 text-blue-700 text-sm font-semibold mb-7"
           >
-            <Star size={14} className="fill-blue-600" />
+            <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
             Rated #1 Cleaning Service in Hyderabad
           </motion.div>
 
           <motion.h1
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 28 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="text-5xl md:text-6xl lg:text-7xl font-bold text-slate-900 leading-[1.1] mb-6"
+            className="text-5xl md:text-6xl lg:text-[4.5rem] font-bold text-slate-900 leading-[1.08] tracking-tight mb-6"
           >
             Your Home,{" "}
-            <span className="gradient-text">Spotlessly</span>{" "}
-            Clean.
+            <span className="gradient-text">Spotlessly</span>
+            <br />Clean.
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="text-xl text-slate-600 leading-relaxed mb-8 max-w-lg"
+            className="text-lg text-slate-500 leading-relaxed mb-9 max-w-md"
           >
-            Professional cleaning services for homes, offices & commercial spaces. Trusted by 5,000+ happy customers across Hyderabad.
+            Professional cleaning for homes, offices & commercial spaces.
+            Trusted by <span className="text-slate-700 font-semibold">5,000+ happy customers</span> across Hyderabad.
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="flex flex-wrap gap-4 mb-10"
+            className="flex flex-wrap gap-3 mb-10"
           >
-            <Button href="/contact" size="lg">
-              Get Free Quote <ArrowRight size={20} />
+            <Button href="/contact" size="lg" className="shadow-lg shadow-blue-200">
+              Get Free Quote <ArrowRight size={18} />
             </Button>
             <Button href="/services" variant="outline" size="lg">
-              View Services
+              Explore Services
             </Button>
           </motion.div>
 
@@ -80,74 +93,110 @@ export default function HeroSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.5 }}
-            className="grid grid-cols-2 gap-2"
+            className="flex flex-col sm:flex-row sm:items-center gap-4"
           >
-            {trustBadges.map((badge, i) => (
-              <div key={i} className="flex items-center gap-2 text-sm text-slate-700">
-                <CheckCircle size={16} className="text-green-500 flex-shrink-0" />
-                {badge}
+            <div className="flex -space-x-2">
+              {["PS", "RM", "AR", "VN"].map((init, i) => (
+                <div
+                  key={i}
+                  className="w-9 h-9 rounded-full border-2 border-white bg-gradient-to-br from-blue-400 to-green-400 flex items-center justify-center text-white text-xs font-bold shadow-sm"
+                >
+                  {init}
+                </div>
+              ))}
+            </div>
+            <div>
+              <div className="flex items-center gap-1 mb-0.5">
+                {[1,2,3,4,5].map(i => <Star key={i} size={13} className="fill-amber-400 text-amber-400" />)}
+                <span className="text-sm font-semibold text-slate-800 ml-1">4.9/5</span>
               </div>
-            ))}
+              <p className="text-xs text-slate-500">From 2,400+ verified reviews</p>
+            </div>
           </motion.div>
         </div>
 
-        {/* Right Visual */}
+        {/* Right — professional visual panel */}
         <motion.div
           initial={{ opacity: 0, x: 40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="relative hidden lg:block"
+          className="relative hidden lg:flex flex-col gap-4"
         >
-          {/* Main card */}
-          <div className="relative rounded-3xl overflow-hidden bg-gradient-to-br from-blue-600 to-blue-800 aspect-[4/5] shadow-2xl shadow-blue-200">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center text-white p-8">
-                <div className="text-8xl mb-4">🏠</div>
-                <p className="text-2xl font-bold">Premium Cleaning</p>
-                <p className="text-blue-200 mt-2">For Every Space</p>
+          {/* Main panel */}
+          <div className="relative rounded-3xl bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 p-8 shadow-2xl overflow-hidden">
+            {/* Subtle grid inside panel */}
+            <div
+              className="absolute inset-0 opacity-[0.06]"
+              style={{
+                backgroundImage: `linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)`,
+                backgroundSize: "32px 32px",
+              }}
+            />
+            <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-blue-500/10 blur-3xl" />
+
+            <div className="relative">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center">
+                  <Sparkles size={18} className="text-white" />
+                </div>
+                <div>
+                  <p className="text-white font-semibold text-sm">Desi Safai</p>
+                  <p className="text-blue-300 text-xs">Premium Cleaning</p>
+                </div>
+                <span className="ml-auto px-2.5 py-1 rounded-full bg-green-500/20 text-green-400 text-xs font-semibold border border-green-500/20">
+                  ● Live
+                </span>
+              </div>
+
+              {/* Service cards inside panel */}
+              <div className="grid grid-cols-2 gap-3 mb-5">
+                {[
+                  { label: "Home Cleaning", price: "₹999", icon: "🏠" },
+                  { label: "Deep Cleaning", price: "₹2,499", icon: "✨" },
+                  { label: "Office Clean", price: "₹1,999", icon: "🏢" },
+                  { label: "Carpet Clean", price: "₹799", icon: "🪣" },
+                ].map((s, i) => (
+                  <div key={i} className="bg-white/5 border border-white/10 rounded-xl p-3 hover:bg-white/10 transition-colors">
+                    <div className="text-xl mb-1.5">{s.icon}</div>
+                    <p className="text-white text-xs font-medium">{s.label}</p>
+                    <p className="text-blue-300 text-xs mt-0.5">{s.price}</p>
+                  </div>
+                ))}
+              </div>
+
+              {/* CTA row */}
+              <div className="flex items-center gap-3 bg-blue-600/20 border border-blue-500/20 rounded-xl p-3">
+                <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
+                  <Phone size={14} className="text-white" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-blue-200 text-xs">Call to book now</p>
+                  <p className="text-white text-sm font-bold truncate">{SITE_CONFIG.phone}</p>
+                </div>
+                <ArrowRight size={16} className="text-blue-400 flex-shrink-0" />
               </div>
             </div>
-            {/* Decorative circles */}
-            <div className="absolute top-8 right-8 w-24 h-24 rounded-full bg-white/10" />
-            <div className="absolute bottom-12 left-8 w-16 h-16 rounded-full bg-white/10" />
           </div>
 
-          {/* Floating stat cards */}
-          <motion.div
-            animate={{ y: [0, -8, 0] }}
-            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -left-8 top-1/4 glass rounded-2xl p-4 shadow-xl"
-          >
-            <div className="text-2xl font-bold text-blue-600">5,000+</div>
-            <div className="text-xs text-slate-600">Happy Customers</div>
-          </motion.div>
-
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -right-6 bottom-1/4 glass rounded-2xl p-4 shadow-xl"
-          >
-            <div className="flex items-center gap-1 mb-1">
-              {[1,2,3,4,5].map(i => <Star key={i} size={12} className="fill-amber-400 text-amber-400" />)}
-            </div>
-            <div className="text-sm font-semibold text-slate-800">98% Satisfaction</div>
-          </motion.div>
-
-          {/* Call badge */}
-          <motion.a
-            href={`tel:${SITE_CONFIG.phone}`}
-            animate={{ y: [0, -5, 0] }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -bottom-4 left-1/2 -translate-x-1/2 glass rounded-2xl px-5 py-3 shadow-xl flex items-center gap-3 hover:shadow-2xl transition-shadow"
-          >
-            <div className="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center">
-              <Phone size={18} className="text-white" />
-            </div>
-            <div>
-              <div className="text-xs text-slate-500">Call Us Now</div>
-              <div className="text-sm font-bold text-slate-800">{SITE_CONFIG.phone}</div>
-            </div>
-          </motion.a>
+          {/* Bottom stat pills */}
+          <div className="grid grid-cols-2 gap-4">
+            {floatingStats.map((s, i) => (
+              <motion.div
+                key={i}
+                animate={{ y: [0, i % 2 === 0 ? -5 : 5, 0] }}
+                transition={{ duration: 3 + i, repeat: Infinity, ease: "easeInOut" }}
+                className="bg-white rounded-2xl p-4 shadow-lg border border-slate-100 flex items-center gap-3"
+              >
+                <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center">
+                  <CheckCircle size={20} className={s.color} />
+                </div>
+                <div>
+                  <p className={`text-xl font-bold ${s.color}`}>{s.value}</p>
+                  <p className="text-xs text-slate-500">{s.label}</p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </motion.div>
       </div>
     </section>

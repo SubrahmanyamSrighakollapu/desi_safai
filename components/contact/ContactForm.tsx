@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Send, CheckCircle, AlertCircle } from "lucide-react";
 import { SERVICES } from "@/lib/constants";
 import Button from "@/components/ui/Button";
+import { apiRequest } from "@/lib/api";
 
 interface FormData {
   name: string;
@@ -25,7 +26,9 @@ export default function ContactForm() {
   const [form, setForm] = useState<FormData>({ name: "", phone: "", location: "", service: "", message: "" });
   const [errors, setErrors] = useState<Errors>({});
   const [submitted, setSubmitted] = useState(false);
+  const [submittedName, setSubmittedName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const validate = (): boolean => {
     const e: Errors = {};
@@ -41,16 +44,32 @@ export default function ContactForm() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validate()) return;
+    setSubmitError("");
     setLoading(true);
-    await new Promise((r) => setTimeout(r, 1200));
-    setLoading(false);
-    setSubmitted(true);
+
+    try {
+      const customerName = form.name.trim();
+
+      await apiRequest<{ success: boolean; message: string; errors?: Errors }>("/contact", {
+        method: "POST",
+        body: JSON.stringify(form),
+      });
+
+      setSubmittedName(customerName);
+      setSubmitted(true);
+      setForm({ name: "", phone: "", location: "", service: "", message: "" });
+    } catch (error) {
+      setSubmitError(error instanceof Error ? error.message : "Unable to submit your request right now.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
     if (errors[name as keyof Errors]) setErrors((prev) => ({ ...prev, [name]: undefined }));
+    if (submitError) setSubmitError("");
   };
 
   if (submitted) {
@@ -64,8 +83,8 @@ export default function ContactForm() {
           <CheckCircle size={40} className="text-green-600" />
         </div>
         <h3 className="text-2xl font-bold text-slate-900 mb-3">Request Received!</h3>
-        <p className="text-slate-600 mb-6">Thank you, {form.name}! We'll contact you within 30 minutes to confirm your booking.</p>
-        <Button onClick={() => { setSubmitted(false); setForm({ name: "", phone: "", location: "", service: "", message: "" }); }} variant="outline">
+        <p className="text-slate-600 mb-6">Thank you, {submittedName}! We'll contact you within 30 minutes to confirm your booking.</p>
+        <Button onClick={() => { setSubmitted(false); setSubmittedName(""); setForm({ name: "", phone: "", location: "", service: "", message: "" }); }} variant="outline">
           Submit Another Request
         </Button>
       </motion.div>
@@ -138,6 +157,13 @@ export default function ContactForm() {
           <>Send Request <Send size={18} /></>
         )}
       </Button>
+
+      {submitError ? (
+        <div className="flex items-start gap-2 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <AlertCircle size={18} className="mt-0.5 shrink-0" />
+          <span>{submitError}</span>
+        </div>
+      ) : null}
 
       <p className="text-xs text-slate-500 text-center">
         We respond within 30 minutes during working hours. Your data is safe with us.
