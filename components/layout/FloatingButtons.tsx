@@ -1,8 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, ArrowUp } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { ArrowUp } from "lucide-react";
 
 function WhatsAppIcon() {
   return (
@@ -15,8 +14,6 @@ import { SITE_CONFIG } from "@/lib/constants";
 
 export default function FloatingButtons() {
   const [showTop, setShowTop] = useState(false);
-  const pathname = usePathname();
-  const showCallButton = pathname !== "/contact";
 
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 400);
@@ -41,21 +38,6 @@ export default function FloatingButtons() {
       >
         <WhatsAppIcon />
       </motion.a>
-
-      {showCallButton && (
-        <motion.a
-          href={`tel:${SITE_CONFIG.phone}`}
-          initial={{ scale: 0 }}
-          animate={{ scale: 1 }}
-          transition={{ delay: 1.1, type: "spring" }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          className="w-14 h-14 rounded-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center shadow-xl shadow-blue-200 transition-colors"
-          title="Call Us"
-        >
-          <Phone size={22} />
-        </motion.a>
-      )}
 
       {/* Back to Top */}
       <AnimatePresence>
